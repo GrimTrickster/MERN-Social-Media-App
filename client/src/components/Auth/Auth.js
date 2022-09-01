@@ -9,20 +9,30 @@ import Input from './Input';
 import useStyles from './styles';
 import Icon from './icon';
 import { useHistory } from 'react-router-dom';
+import { signIn, signUp } from '../../actions/auth';
+
+const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword:''};
 
 const Auth = () => {
     const classes = useStyles();
     const [showPassword, setShowPassword] = useState(false);
+    const [formData, setFormData] = useState(initialState);
     const [isSignUp, setIsSignUp] = useState(false);
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const handleSubmit = () => {
-
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        
+        if(isSignUp) {
+            dispatch(signUp(formData, history))
+        } else {
+            dispatch(signIn(formData, history))
+        }
     };
 
-    const handleChange = () => {
-
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const switchMode = () => {
@@ -33,13 +43,15 @@ const Auth = () => {
     const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword);
 
     const googleSuccess = (res) => {
-        const clientId = res?.clientId;
+        const token = res?.credential;
         const result = jwt_decode(res?.credential);
+
+        console.log(token)
         
         try {
-            dispatch({ type: 'AUTH', data: { result, clientId } });
+            dispatch({ type: 'AUTH', data: { result, token } });
 
-            history.push('/')
+            history.push('/');
         } catch (error) {
             console.log(error);
         }
