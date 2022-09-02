@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GoogleLogin, googleLogout } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
 import { useDispatch } from 'react-redux';
 import jwt_decode from 'jwt-decode';
 
@@ -7,7 +7,6 @@ import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Input from './Input';
 import useStyles from './styles';
-import Icon from './icon';
 import { useHistory } from 'react-router-dom';
 import { signIn, signUp } from '../../actions/auth';
 
