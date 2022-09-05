@@ -14,6 +14,7 @@ const Paginate = ({ page }) => {
 
     useEffect(() => {
         if(page) dispatch(getPosts(page));
+        // eslint-disable-next-line
     }, [page]);
 
     return (

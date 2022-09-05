@@ -16,6 +16,10 @@ app.use(cors());
 
 app.use('/posts', postRoutes)
 app.use('/users', userRoutes);
+
+app.get('/', (req, res) => {
+    res.send('APP IS RUNNING')
+})
 // MongoDB Atlas
 // const CONNECTION_URL = 'mongodb+srv://grimtrickster:grimtrickster@cluster0.kvhgu1m.mongodb.net/?retryWrites=true&w=majority';
 

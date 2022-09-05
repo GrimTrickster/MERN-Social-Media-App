@@ -6,11 +6,11 @@ export const getPost = async (req, res) => {
     const { id } = req.params;
     try {
         const post = await PostMessage.findById(id);
-
+        
         res.status(200).json(post);
-
+        
     } catch (error) {
-        res.status(404).json({message: error.message});
+        res.status(403).json({message: error.message});
     }
 };
 
@@ -30,19 +30,19 @@ export const getPosts = async (req, res) => {
     } catch (error) {
         res.status(404).json({message: error.message});
     }
-}
+};
 
 export const getPostsBySearch = async (req, res) => {
     const { searchQuery, tags } = req.query;
 
     try {
-        const title = new RegExp(searchQuery, 'i');
+        const title = new RegExp(searchQuery, "i");
 
-        const posts = await PostMessage.find({ $or: [{ title }, { tags: { $in: tags.split(',')} }] });
+        const posts = await PostMessage.find({ $or: [ { title }, { tags: { $in: tags.split(',') } } ]});
 
         res.json({ data: posts });
-    } catch (error) {
-        res.status(404).json({message: error});
+    } catch (error) {    
+        res.status(404).json({ message: error.message });
     }
 };
 
@@ -97,16 +97,29 @@ export const likePost = async (req, res) => {
     const post = await PostMessage.findById(id);
 
     // Already liked?
-    const index = post.likes.findIndex((id) => id === String(req.userId));
+    const index = post?.likes?.findIndex((id) => id === String(req.userId));
 
     
     if(index === -1) {
         // Like Post
-        post.likes.push(req.userId)
+        post?.likes.push(req.userId)
     } else {
         // dislike Post
-        post.likes = post.likes.filter((id) => id !== String(req.userId));
+        post.likes = post?.likes?.filter((id) => id !== String(req.userId));
     }
+
+    const updatedPost = await PostMessage.findByIdAndUpdate(id, post, { new: true });
+
+    res.json(updatedPost);
+}
+
+export const commentPost = async (req, res) => {
+    const { id } = req.params;
+    const { value } = req.body;
+
+    const post = await PostMessage.findById(id);
+    
+    post?.comments.push(value);
 
     const updatedPost = await PostMessage.findByIdAndUpdate(id, post, { new: true });
 

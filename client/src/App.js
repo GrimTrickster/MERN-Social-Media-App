@@ -16,8 +16,8 @@ const App = () => {
 
     return (
         // <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_API_TOKEN}>
-        <GoogleOAuthProvider clientId='624503052534-a61dst9m12ro52jf9g58ras14f0l1j16.apps.googleusercontent.com'>
             <BrowserRouter>
+        <GoogleOAuthProvider clientId='624503052534-a61dst9m12ro52jf9g58ras14f0l1j16.apps.googleusercontent.com'>
                 <Container maxWidth="xl">
                     <Navbar />
                     <Switch>
@@ -28,8 +28,8 @@ const App = () => {
                         <Route path="/auth" exact component={() => (!user ? <Auth /> : <Redirect to="/posts"/>)}/>
                     </Switch>
                 </Container>
-            </BrowserRouter>
         </GoogleOAuthProvider>
+            </BrowserRouter>
     );
 }
 
